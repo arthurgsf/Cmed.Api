@@ -8,6 +8,14 @@ CMED is the brazillian Public agency responsible for economical regulation of th
 # The Project
 This project provides an easy way to automatically keep updated with the latest drug prices, names & EAN code by scrapping the site periocally, looking for changes.
 
+## Endpoints
+
+The updated file is downloadable from the /conformity endpoint.
+
+Check if your file is updated, by sending the /conformity/is-updated endpoint with your file creation date (for example 12/12/2025 21:16:56 -03:00) as a url parameter.
+
+There is a Swagger UI enpoint /swagger that makes it easy to undertand the API.
+
 # Build and Test
 This project uses .net10, sou you need to have the sdk installed. Then you can run:
 
