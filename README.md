@@ -27,5 +27,21 @@ dotnet build -c Release
 dotnet run -c Release
 ```
 
+## Configuration
+The configurable parameters for this API are in the `appsettings.json` and `appsettings.Development.json` files.
+
+### ConformitySiteUrl
+The site url from where the .xlsx is obtained.
+
+### ConformityOutputDirectoryName
+The directory name where the processed .csv file must be stored.
+
+### ConformityFileName
+The name of the file where the .csv content will be stored.
+
+### SleepTimeInMilliseconds
+This parameter controls the frequency of the queries in the CMED site.
+The file is updated monthly, so there is no need to query more than a couple times a day, ***adjust accordingly***.
+
 # Disclaimer
 This project has no commercial intentions.
