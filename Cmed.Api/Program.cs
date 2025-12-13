@@ -2,7 +2,9 @@ using Cmed.Api.Services;
 using Cmed.Api.Settings;
 using Cmed.Api.Workers;
 using Cmed.Scrapper;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,25 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
+
+// Add compression services
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(["text/csv"]);
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Fastest;
+});
+
 
 builder.Services.Configure<CmedWorkerSettings>(
     builder.Configuration.GetSection("Worker")
@@ -39,6 +60,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseResponseCompression();
 app.MapControllers();
 
 app.Run();
