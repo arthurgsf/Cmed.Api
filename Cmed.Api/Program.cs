@@ -12,7 +12,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
-// builder.Logging.AddConsole();
 
 builder.Services.Configure<CmedWorkerSettings>(
     builder.Configuration.GetSection("Worker")
