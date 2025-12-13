@@ -25,7 +25,7 @@ public class ConformityService(
     public async Task<Stream> GetLatestFileAsync()
     {
         string path = Path.Combine(_cmedWorkerSettings.Value.ConformityOutputFilePath);
-        var csvBytes = _cache.Get<byte[]>("conformity.csv");
+        var csvBytes = _cache.Get<byte[]>(_cmedWorkerSettings.Value.ConformityFileName);
         if (csvBytes?.Length > 0) // cache hit
         {
             var stream = new MemoryStream(csvBytes);
@@ -34,16 +34,6 @@ public class ConformityService(
 
         // cache miss
         if (!File.Exists(path)) throw new FileNotFoundException();
-        var fileStream = File.OpenRead(path);
-        var buffer = new byte[fileStream.Length];
-
-        var bytesRead = await fileStream.ReadAsync(buffer);
-        if(bytesRead == buffer.Length)
-        {
-            _cache.Set("conformity.csv", buffer);
-        }
-
-        fileStream.Seek(0, SeekOrigin.Begin);
-        return fileStream;
+        return File.OpenRead(path);
     }
 }

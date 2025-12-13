@@ -1,5 +1,7 @@
+using System.Text;
 using Cmed.Api.Settings;
 using Cmed.Scrapper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 namespace Cmed.Api.Workers;
@@ -7,9 +9,11 @@ namespace Cmed.Api.Workers;
 public class CmedWorker(
     ICmedScrapper cmedScrapper,
     ILogger<CmedWorker> logger,
-    IOptions<CmedWorkerSettings> settings
+    IOptions<CmedWorkerSettings> settings,
+    IMemoryCache cache
 ): BackgroundService
 {
+    private readonly IMemoryCache _cache = cache;
     private readonly IOptions<CmedWorkerSettings> _settings = settings;
     private readonly ILogger _logger = logger;
     
@@ -45,6 +49,10 @@ public class CmedWorker(
                 {
                     File.Move(tempFilePath, outputFilePath);
                 }
+
+                //update cache
+                var bytes = Encoding.UTF8.GetBytes(csv);
+                _cache.Set(_settings.Value.ConformityFileName, bytes);
 
                 _logger.LogInformation("Download finished {finished_date}, csv written to {output_file_path}", DateTimeOffset.Now, outputFilePath);
             }
