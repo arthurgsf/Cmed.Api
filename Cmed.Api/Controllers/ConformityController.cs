@@ -11,7 +11,7 @@ public class ConformityController(
 {
     private readonly IConformityService _conformityservice = conformityService;
 
-    [HttpGet("/is-updated")]
+    [HttpGet("is-updated")]
     public ActionResult<bool> GetIsUpdated(DateTimeOffset queryDateTimeOffset)
     {
         return _conformityservice.GetIsUpdated(queryDateTimeOffset);
