@@ -1,12 +1,16 @@
+using System.Text;
 using Cmed.Api.Settings;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 namespace Cmed.Api.Services;
 
 public class ConformityService(
-    IOptions<CmedWorkerSettings> cmedWorkerSettings
+    IOptions<CmedWorkerSettings> cmedWorkerSettings,
+    IMemoryCache cache
 ): IConformityService
 {
+    private readonly IMemoryCache _cache = cache;
     private readonly IOptions<CmedWorkerSettings> _cmedWorkerSettings = cmedWorkerSettings;
     public bool GetIsUpdated(DateTimeOffset queryDateTimeOffset)
     {
@@ -18,10 +22,28 @@ public class ConformityService(
         return queryDateTimeOffset.CompareTo(fileCreationTime) > 0;
     }
 
-    public Stream GetLatestFile()
+    public async Task<Stream> GetLatestFileAsync()
     {
         string path = Path.Combine(_cmedWorkerSettings.Value.ConformityOutputFilePath);
+        var csvBytes = _cache.Get<byte[]>("conformity.csv");
+        if (csvBytes?.Length > 0) // cache hit
+        {
+            var stream = new MemoryStream(csvBytes);
+            return stream;
+        }
+
+        // cache miss
         if (!File.Exists(path)) throw new FileNotFoundException();
-        return File.OpenRead(path);
+        var fileStream = File.OpenRead(path);
+        var buffer = new byte[fileStream.Length];
+
+        var bytesRead = await fileStream.ReadAsync(buffer);
+        if(bytesRead == buffer.Length)
+        {
+            _cache.Set("conformity.csv", buffer);
+        }
+
+        fileStream.Seek(0, SeekOrigin.Begin);
+        return fileStream;
     }
 }

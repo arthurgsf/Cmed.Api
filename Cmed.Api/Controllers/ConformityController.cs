@@ -18,9 +18,9 @@ public class ConformityController(
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-        Stream fstream = _conformityservice.GetLatestFile();
+        Stream fstream = await _conformityservice.GetLatestFileAsync();
         return new FileStreamResult(fstream, "text/csv")
         {
             FileDownloadName = "conformidade.csv"

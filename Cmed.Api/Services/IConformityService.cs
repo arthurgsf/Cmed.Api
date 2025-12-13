@@ -2,6 +2,6 @@ namespace Cmed.Api.Services;
 
 public interface IConformityService
 {
-    public Stream GetLatestFile();
+    public Task<Stream> GetLatestFileAsync();
     public bool GetIsUpdated(DateTimeOffset queryDateTimeOffset);
 }
