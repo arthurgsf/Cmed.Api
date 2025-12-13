@@ -1,20 +1,23 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+## Câmara de Regulação do Mercado de Medicamentos (CMED) 💊
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+CMED is the brazillian Public agency responsible for economical regulation of the pharmaceutical market. The names, EAN codes and the max prices for most of the drugs available in Brazil are updated monthly to a .xlsx file made public [here](https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/cmed/precos)
+
+
+
+# The Project
+This project provides an easy way to automatically keep updated with the latest drug prices, names & EAN code by scrapping the site periocally, looking for changes.
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+This project uses .net10, sou you need to have the sdk installed. Then you can run:
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+```bash
+dotnet build -c Release
+```
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+```bash
+dotnet run -c Release
+```
+
+# Disclaimer
+This project has no commercial intentions.
