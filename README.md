@@ -1,5 +1,4 @@
-# Introduction
-## Câmara de Regulação do Mercado de Medicamentos (CMED) 💊
+# About CMED (Câmara de Regulação do Mercado de Medicamentos) 💊
 
 CMED is the brazillian Public agency responsible for economical regulation of the pharmaceutical market. The names, EAN codes and the max prices for most of the drugs available in Brazil are updated monthly to a .xlsx file made public [here](https://www.gov.br/anvisa/pt-br/assuntos/medicamentos/cmed/precos)
 
